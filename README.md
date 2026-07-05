@@ -11,7 +11,7 @@ Além do desenvolvimento da aplicação, o projeto teve como foco a utilização
 Durante o desenvolvimento foram utilizadas diferentes técnicas de Engenharia de Prompt:
 
 * **Inversion Prompting** para o levantamento e refinamento dos requisitos do sistema, permitindo identificar funcionalidades, restrições e necessidades do projeto de forma estruturada.
-* **Persona + Chain-of-Thought** para orientar a Inteligência Artificial durante a construção da aplicação, simulando um desenvolvedor especialista e organizando o processo de desenvolvimento de forma lógica, solocitando que ele utilizasse uma imagem da pasta imagens como referência para o design.
+* **Persona + Chain-of-Thought** para orientar a Inteligência Artificial durante a construção da aplicação, simulando um desenvolvedor especialista e organizando o processo de desenvolvimento de forma lógica, solicitando que ela utilizasse uma imagem da pasta imagens como referência para o design.
 
 ## 🚀 Funcionalidades
 
