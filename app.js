@@ -674,6 +674,7 @@
     const responsible = getUser(task.responsibleId);
     const project = getProject(task.projectId);
     const overdue = taskIsOverdue(task);
+    const techs = task.technologies || [];
     return `
       <article class="task-card" data-task-id="${task.id}">
         <header>
@@ -681,19 +682,34 @@
             <h4>${escapeHtml(task.title)}</h4>
             <div class="chip-row">
               <span class="chip ${statusClass(task.status)}">${escapeHtml(task.status)}</span>
-              ${project ? `<span class="chip brand">${escapeHtml(project.name)}</span>` : `<span class="chip">Sem projeto</span>`}
             </div>
           </div>
           <button class="btn btn-ghost" data-action="open-task" data-task-id="${task.id}">Abrir</button>
         </header>
         <p class="task-desc">${escapeHtml(task.description)}</p>
-        <div class="task-meta">
-          <span class="chip">${escapeHtml(getTeam(task.teamId)?.name || "-")}</span>
-          <span class="chip">${escapeHtml(responsible ? responsible.name : "-")}</span>
-          <span class="chip ${overdue ? "danger" : "brand"}">${overdue ? "Atrasada" : formatDate(task.dueDate)}</span>
-        </div>
-        <div class="chip-row">
-          ${(task.technologies || []).slice(0, 4).map((tech) => `<span class="chip">${escapeHtml(tech)}</span>`).join("")}
+        <div class="task-fields">
+          <div class="task-field">
+            <span class="task-field-label">Equipe</span>
+            <span class="task-field-value">${escapeHtml(getTeam(task.teamId)?.name || "-")}</span>
+          </div>
+          <div class="task-field">
+            <span class="task-field-label">Responsável</span>
+            <span class="task-field-value">${escapeHtml(responsible ? responsible.name : "-")}</span>
+          </div>
+          <div class="task-field">
+            <span class="task-field-label">Projeto</span>
+            <span class="task-field-value">${project ? escapeHtml(project.name) : "Sem projeto"}</span>
+          </div>
+          <div class="task-field">
+            <span class="task-field-label">Prazo</span>
+            <span class="task-field-value ${overdue ? "danger" : ""}">${overdue ? "Atrasada" : formatDate(task.dueDate)}</span>
+          </div>
+          <div class="task-field wide">
+            <span class="task-field-label">Ferramentas</span>
+            <div class="chip-row">
+              ${techs.length ? techs.map((tech) => `<span class="chip">${escapeHtml(tech)}</span>`).join("") : `<span class="muted">Nenhuma</span>`}
+            </div>
+          </div>
         </div>
         <div class="inline-actions">
           ${(isLeader(user) || user.id === task.responsibleId) ? renderStatusQuickActions(task, user) : ""}
