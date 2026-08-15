@@ -877,6 +877,53 @@ input[type="checkbox"] {
   gap: 16px;
 }
 
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.user-card {
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.user-card-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: white;
+  background: linear-gradient(135deg, #22c55e, #2563eb);
+  flex-shrink: 0;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+}
+
+.user-card-id {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.user-card-id strong {
+  font-size: 1rem;
+}
+
+.user-card-id .muted {
+  font-size: 0.85rem;
+}
+
 .tabs {
   display: flex;
   gap: 10px;

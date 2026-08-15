@@ -943,39 +943,39 @@
           </div>
           ${isLeader(user) ? `<button class="btn btn-primary" data-action="open-user-form">Novo usuário</button>` : ""}
         </div>
-        <article class="card list-card">
-          <div class="list-table">
-            ${users.map((item) => renderUserItem(item)).join("")}
-          </div>
-        </article>
+        <div class="user-grid">
+          ${users.map((item) => renderUserCard(item)).join("")}
+        </div>
       </section>
     `;
   }
 
-  function renderUserItem(item) {
+  function renderUserCard(item) {
     const teams = item.teams.map((teamId) => getTeam(teamId)?.name).filter(Boolean);
+    const isLeaderRole = item.role === "leader";
     return `
-      <div class="list-item">
-        <div>
-          <strong>${escapeHtml(item.name)}</strong>
-          <small>${escapeHtml(item.email)}</small>
+      <article class="card user-card">
+        <div class="user-card-head">
+          <div class="user-avatar">${escapeHtml(item.avatar)}</div>
+          <div class="user-card-id">
+            <strong>${escapeHtml(item.name)}</strong>
+            <span class="muted">${escapeHtml(item.email)}</span>
+          </div>
         </div>
-        <div>
-          <strong>${escapeHtml(item.role === "leader" ? "Líder" : "Membro")}</strong>
-          <small>Perfil</small>
+        <div class="chip-row">
+          <span class="chip ${isLeaderRole ? "brand" : "good"}">${isLeaderRole ? "Líder" : "Membro"}</span>
+          <span class="chip">${teams.length} equipe(s)</span>
         </div>
-        <div>
-          <strong>${teams.length}</strong>
-          <small>Equipes</small>
-        </div>
-        <div>
-          <strong>${teams.join(", ") || "-"}</strong>
-          <small>Vínculos</small>
+        <div class="mini-card">
+          <div class="muted" style="margin-bottom:8px;">Equipes vinculadas</div>
+          <div class="chip-row">
+            ${teams.length ? teams.map((team) => `<span class="chip">${escapeHtml(team)}</span>`).join("") : `<span class="muted">Nenhuma equipe.</span>`}
+          </div>
         </div>
         <div class="inline-actions">
-          ${isLeader(currentUser()) ? `<button class="btn btn-ghost" data-action="manage-user" data-user-id="${item.id}">Editar</button>` : ""}
+          ${isLeader(currentUser()) ? `<button class="btn btn-secondary" data-action="manage-user" data-user-id="${item.id}">Editar</button>` : ""}
         </div>
-      </div>
+      </article>
     `;
   }
 
