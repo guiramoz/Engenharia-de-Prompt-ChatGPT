@@ -834,34 +834,8 @@
           </div>
           ${isLeader(user) ? `<button class="btn btn-primary" data-action="open-project-form">Novo projeto</button>` : ""}
         </div>
-        <div class="two-col">
-          <article class="card list-card">
-            <div class="section-header">
-              <h3>Lista de projetos</h3>
-              <span class="muted">${projects.length} visíveis</span>
-            </div>
-            <div class="list-table">
-              ${projects.length ? projects.map((project) => renderProjectItem(project)).join("") : `<div class="empty-state">Nenhum projeto visível.</div>`}
-            </div>
-          </article>
-          <article class="card list-card">
-            <div class="section-header">
-              <h3>Mapa de tarefas</h3>
-              <span class="muted">Por projeto</span>
-            </div>
-            <div class="stack">
-              ${projects.length ? projects.map((project) => {
-                const tasks = visibleTasksFor(user).filter((task) => task.projectId === project.id);
-                return `
-                  <div class="mini-card">
-                    <strong>${escapeHtml(project.name)}</strong>
-                    <div class="muted">${tasks.length} tarefa(s) vinculada(s)</div>
-                    <div class="bar" style="margin-top:10px;"><span style="width:${projectProgress(project)}%"></span></div>
-                  </div>
-                `;
-              }).join("") : `<div class="empty-state">Sem dados suficientes.</div>`}
-            </div>
-          </article>
+        <div class="project-grid">
+          ${projects.length ? projects.map((project) => renderProjectCard(project, user)).join("") : `<div class="empty-state">Nenhum projeto visível.</div>`}
         </div>
       </section>
     `;
@@ -880,41 +854,41 @@
     return projects;
   }
 
-  function renderProjectItem(project) {
+  function renderProjectCard(project, user) {
     const team = getTeam(project.teamId);
     const progress = projectProgress(project);
+    const tasks = visibleTasksFor(user).filter((task) => task.projectId === project.id);
+    const done = tasks.filter((task) => task.status === "Concluída").length;
     return `
-      <div class="project-item">
-        <div class="project-item-main">
-          <div class="project-title-block">
+      <article class="card project-card">
+        <div class="project-card-head">
+          <div class="project-card-id">
             <strong>${escapeHtml(project.name)}</strong>
-            <span class="chip brand">Projeto</span>
+            <span class="muted">${escapeHtml(project.description)}</span>
           </div>
-          <p class="project-desc">${escapeHtml(project.description)}</p>
-          <div class="chip-row">
-            <span class="chip">${escapeHtml(team?.name || "-")}</span>
-            <span class="chip">${formatDate(project.deadline)}</span>
-            <span class="chip ${progress === 100 ? "good" : progress >= 50 ? "warn" : ""}">${progress}% concluído</span>
+          <span class="chip brand">Projeto</span>
+        </div>
+        <div class="bar project-bar"><span style="width:${progress}%"></span></div>
+        <div class="project-card-meta">
+          <div class="task-field">
+            <span class="task-field-label">Equipe</span>
+            <span class="task-field-value">${escapeHtml(team?.name || "-")}</span>
+          </div>
+          <div class="task-field">
+            <span class="task-field-label">Prazo</span>
+            <span class="task-field-value">${formatDate(project.deadline)}</span>
+          </div>
+          <div class="task-field">
+            <span class="task-field-label">Conclusão</span>
+            <span class="task-field-value">${progress}%</span>
+          </div>
+          <div class="task-field">
+            <span class="task-field-label">Tarefas</span>
+            <span class="task-field-value">${done} de ${tasks.length} concluída(s)</span>
           </div>
         </div>
-        <div class="project-item-meta">
-          <div class="project-metric">
-            <span class="muted">Equipe</span>
-            <strong>${escapeHtml(team?.name || "-")}</strong>
-          </div>
-          <div class="project-metric">
-            <span class="muted">Prazo</span>
-            <strong>${formatDate(project.deadline)}</strong>
-          </div>
-          <div class="project-metric">
-            <span class="muted">Conclusão</span>
-            <strong>${progress}%</strong>
-          </div>
-          <div class="project-action">
-            <button class="btn btn-ghost" data-action="open-task-filter-project" data-project-id="${project.id}">Ver tarefas</button>
-          </div>
-        </div>
-      </div>
+        <button class="btn btn-secondary project-view-btn" data-action="open-task-filter-project" data-project-id="${project.id}">Ver tarefas</button>
+      </article>
     `;
   }
 
@@ -949,29 +923,24 @@
     const members = team.members.map((memberId) => getUser(memberId)).filter(Boolean);
     const parent = team.parentId ? getTeam(team.parentId) : null;
     return `
-      <article class="card list-card">
-        <div class="section-header">
-          <h3>${escapeHtml(team.name)}</h3>
-          ${parent ? `<span class="chip brand">Subequipe de ${escapeHtml(parent.name)}</span>` : `<span class="chip">Equipe principal</span>`}
-        </div>
-        <div class="stack">
-          <div class="mini-card">
-            <strong>${members.length}</strong>
-            <div class="muted">membro(s)</div>
-          </div>
-          <div class="mini-card">
-            <div class="muted">Integrantes</div>
-            <div class="chip-row" style="margin-top:8px;">
-              ${members.map((member) => `<span class="chip">${escapeHtml(member.name)}</span>`).join("")}
-            </div>
-          </div>
-          <div class="mini-card">
-            <div class="muted">Ações</div>
-            <div class="inline-actions" style="margin-top:8px;">
-              <button class="btn btn-ghost" data-action="manage-team" data-team-id="${team.id}">Gerenciar</button>
-            </div>
+      <article class="card team-card">
+        <div class="team-card-head">
+          <div class="team-icon">${escapeHtml(team.name.slice(0, 2).toUpperCase())}</div>
+          <div class="team-card-id">
+            <strong>${escapeHtml(team.name)}</strong>
+            <span class="muted">${parent ? `Subequipe de ${escapeHtml(parent.name)}` : "Equipe principal"}</span>
           </div>
         </div>
+        <div class="chip-row">
+          <span class="chip ${parent ? "brand" : ""}">${members.length} membro(s)</span>
+        </div>
+        <div class="mini-card">
+          <div class="muted" style="margin-bottom:8px;">Integrantes</div>
+          <div class="chip-row">
+            ${members.length ? members.map((member) => `<span class="chip">${escapeHtml(member.name)}</span>`).join("") : `<span class="muted">Nenhum integrante.</span>`}
+          </div>
+        </div>
+        <button class="btn btn-secondary team-manage-btn" data-action="manage-team" data-team-id="${team.id}">Gerenciar equipe</button>
       </article>
     `;
   }
