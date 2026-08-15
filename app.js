@@ -263,15 +263,7 @@
   }
 
   function renderLogo() {
-    return `
-      <svg class="tf-logo" viewBox="0 0 120 120" aria-hidden="true">
-        <circle cx="60" cy="60" r="58" fill="#041e42"/>
-        <circle cx="60" cy="60" r="58" fill="none" stroke="#e8b90e" stroke-width="4"/>
-        <text x="60" y="76" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="900" fill="#e8b90e" letter-spacing="-1">TF</text>
-        <path d="M28 90 L92 90" stroke="#e8b90e" stroke-width="4" stroke-linecap="round"/>
-        <path d="M80 84 L92 90 L80 96" stroke="#e8b90e" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    `;
+    return `<img class="tf-logo" src="./imagens/scania-logo.svg" alt="Scania" />`;
   }
 
   function formatDate(value) {
@@ -2091,7 +2083,7 @@
     setTimeout(() => {
       splash.classList.add("hidden");
       setTimeout(() => splash.remove(), 600);
-    }, 1400);
+    }, 1800);
   }
 
   render();
