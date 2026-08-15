@@ -262,6 +262,18 @@
       .toUpperCase();
   }
 
+  function renderLogo() {
+    return `
+      <svg class="tf-logo" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="58" fill="#041e42"/>
+        <circle cx="60" cy="60" r="58" fill="none" stroke="#e8b90e" stroke-width="4"/>
+        <text x="60" y="76" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="900" fill="#e8b90e" letter-spacing="-1">TF</text>
+        <path d="M28 90 L92 90" stroke="#e8b90e" stroke-width="4" stroke-linecap="round"/>
+        <path d="M80 84 L92 90 L80 96" stroke="#e8b90e" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+  }
+
   function formatDate(value) {
     if (!value) return "-";
     return new Intl.DateTimeFormat("pt-BR", {
@@ -364,29 +376,33 @@
         <div class="login-wrap">
           <section class="hero-card">
             <div class="brand-badge">
-              <div class="brand-mark">TF</div>
-              <div class="brand-text">TaskFlow</div>
+              ${renderLogo()}
+              <div class="brand-text">
+                <div>TaskFlow</div>
+                <small>Descomplica sua operação</small>
+              </div>
             </div>
             <div class="hero-copy">
               <span class="eyebrow">Gestão de equipes, tarefas e projetos</span>
-              <h1>Organize o trabalho com clareza, rastreio e colaboração.</h1>
+              <h1>Descomplique as tarefas da sua operação.</h1>
               <p>
-                A interface reúne login, equipes com subequipes, projetos, tarefas, comentários, anexos,
-                notificações em tempo real e dashboard de produtividade em uma experiência local e leve.
+                Pensado para grandes empresas, o TaskFlow reúne login, equipes com subequipes, projetos, tarefas,
+                comentários, anexos e notificações em uma experiência local, leve e sem burocracia.
               </p>
               <div class="hero-highlights">
                 <div class="highlight-card">
-                  <strong>2 perfis</strong>
-                  <span>Líder para gestão completa e Membro para foco na execução e status.</span>
+                  <strong>Grandes operações</strong>
+                  <span>Estrutura hierárquica e visibilidade por equipe para times numerosos.</span>
                 </div>
                 <div class="highlight-card">
                   <strong>Fluxo completo</strong>
-                  <span>Histórico, menções, anexos, notificações e visibilidade por equipe.</span>
+                  <span>Histórico, menções, anexos, notificações e dashboard de produtividade.</span>
                 </div>
               </div>
             </div>
           </section>
           <section class="login-card">
+            <div class="login-logo">${renderLogo()}</div>
             <h2>Entrar no TaskFlow</h2>
             <p>Use e-mail e senha para acessar a sua área.</p>
             <form id="loginForm" class="field-grid" novalidate>
@@ -435,8 +451,11 @@
         <div class="app-frame">
           <aside class="sidebar">
             <div class="brand-badge">
-              <div class="brand-mark">TF</div>
-              <div class="brand-text">TaskFlow</div>
+              ${renderLogo()}
+              <div class="brand-text">
+                <div>TaskFlow</div>
+                <small class="brand-tagline">Descomplica sua operação</small>
+              </div>
             </div>
             <nav class="sidebar-nav">
               ${navButton("dashboard", "Dashboard", "◫")}
@@ -2066,5 +2085,15 @@
     }
   });
 
+  function hideSplash() {
+    const splash = document.getElementById("splash");
+    if (!splash) return;
+    setTimeout(() => {
+      splash.classList.add("hidden");
+      setTimeout(() => splash.remove(), 600);
+    }, 1400);
+  }
+
   render();
+  hideSplash();
 })();
