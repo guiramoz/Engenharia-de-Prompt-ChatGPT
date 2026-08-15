@@ -1423,8 +1423,62 @@ input[type="checkbox"] {
   }
 }
 
-.app-shell.app-enter {
+.app-enter .app-frame {
   animation: appIn 0.55s cubic-bezier(0.22, 0.68, 0.36, 1) both;
+}
+
+.app-enter .hero-card {
+  animation: slideInLeft 0.7s cubic-bezier(0.22, 0.68, 0.36, 1) both;
+}
+
+.app-enter .login-card {
+  animation: slideInRight 0.7s cubic-bezier(0.22, 0.68, 0.36, 1) both;
+  animation-delay: 0.1s;
+}
+
+.app-enter .login-logo .tf-logo {
+  animation: popIn 0.55s cubic-bezier(0.2, 1.2, 0.3, 1) both;
+  animation-delay: 0.15s;
+}
+
+.app-enter .hero-copy .eyebrow {
+  animation: fadeUp 0.6s ease both;
+  animation-delay: 0.18s;
+}
+
+.app-enter .hero-copy p {
+  animation: fadeUp 0.6s ease both;
+  animation-delay: 0.55s;
+}
+
+.app-enter .hero-highlights {
+  animation: fadeUp 0.6s ease both;
+  animation-delay: 0.75s;
+}
+
+.app-enter .login-card p {
+  animation: fadeUp 0.5s ease both;
+  animation-delay: 0.4s;
+}
+
+.app-enter .login-card form {
+  animation: fadeUp 0.5s ease both;
+  animation-delay: 0.55s;
+}
+
+.app-enter .login-card .helper-row {
+  animation: fadeUp 0.5s ease both;
+  animation-delay: 0.7s;
+}
+
+.app-enter .login-card .action-row {
+  animation: fadeUp 0.5s ease both;
+  animation-delay: 0.85s;
+}
+
+.app-enter .login-card .quick-login {
+  animation: fadeUp 0.5s ease both;
+  animation-delay: 1s;
 }
 
 @keyframes appIn {
@@ -1435,6 +1489,39 @@ input[type="checkbox"] {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-46px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(46px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
 }
 

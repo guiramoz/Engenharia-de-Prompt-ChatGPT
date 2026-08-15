@@ -287,6 +287,10 @@
     shell.classList.remove("app-enter");
     void shell.offsetWidth;
     shell.classList.add("app-enter");
+    const heroTitle = shell.querySelector(".hero-copy h1");
+    if (heroTitle) animateLetters(heroTitle, 0.25, 0.03);
+    const loginTitle = shell.querySelector(".login-card h2");
+    if (loginTitle) animateLetters(loginTitle, 0.35, 0.04);
   }
 
   function formatDate(value) {
@@ -376,6 +380,7 @@
       attachLoginHandlers();
       stopRealtimeChecks();
       saveState();
+      enterApp();
       return;
     }
 
