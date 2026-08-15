@@ -117,6 +117,11 @@ input[type="checkbox"] {
 }
 
 .hero-card,
+.login-card {
+  opacity: 0;
+}
+
+.hero-card,
 .login-card,
 .app-frame {
   border-radius: var(--radius-xl);
@@ -208,7 +213,7 @@ input[type="checkbox"] {
 
 .hero-copy h1 {
   font-size: clamp(2.5rem, 4vw, 4.8rem);
-  line-height: 0.96;
+  line-height: 1.04;
   margin: 18px 0 18px;
   letter-spacing: -0.04em;
 }
@@ -1428,10 +1433,12 @@ input[type="checkbox"] {
 }
 
 .app-enter .hero-card {
+  opacity: 1;
   animation: slideInLeft 0.7s cubic-bezier(0.22, 0.68, 0.36, 1) both;
 }
 
 .app-enter .login-card {
+  opacity: 1;
   animation: slideInRight 0.7s cubic-bezier(0.22, 0.68, 0.36, 1) both;
   animation-delay: 0.1s;
 }

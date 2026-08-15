@@ -274,8 +274,12 @@
     el.setAttribute("aria-label", text);
     el.textContent = "";
     [...text].forEach((ch, i) => {
+      if (ch === " ") {
+        el.appendChild(document.createTextNode(" "));
+        return;
+      }
       const s = document.createElement("span");
-      s.textContent = ch === " " ? "\u00A0" : ch;
+      s.textContent = ch;
       s.style.animationDelay = `${baseDelay + i * step}s`;
       el.appendChild(s);
     });
@@ -380,7 +384,6 @@
       attachLoginHandlers();
       stopRealtimeChecks();
       saveState();
-      enterApp();
       return;
     }
 
@@ -1191,6 +1194,7 @@
         state.sessionEmail = null;
         state.ui.activeNotificationsFor = null;
         render();
+        enterApp();
         break;
       case "set-task-filter":
         state.ui.taskFilter = value;
@@ -2120,6 +2124,7 @@
     if (event.key === STORAGE_KEY) {
       state = loadState();
       render();
+      enterApp();
     }
   });
 
@@ -2128,10 +2133,8 @@
     if (!splash) return;
     setTimeout(() => {
       splash.classList.add("hidden");
-      setTimeout(() => {
-        splash.remove();
-        enterApp();
-      }, 650);
+      enterApp();
+      setTimeout(() => splash.remove(), 650);
     }, 1600);
   }
 
