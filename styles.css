@@ -1413,7 +1413,12 @@ input[type="checkbox"] {
   }
 }
 
-.letters span {
+.letters-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.letters-word > span {
   display: inline-block;
   white-space: pre;
   opacity: 0;

@@ -273,15 +273,21 @@
     el.classList.add("letters");
     el.setAttribute("aria-label", text);
     el.textContent = "";
-    [...text].forEach((ch, i) => {
-      if (ch === " ") {
-        el.appendChild(document.createTextNode(" "));
-        return;
-      }
-      const s = document.createElement("span");
-      s.textContent = ch;
-      s.style.animationDelay = `${baseDelay + i * step}s`;
-      el.appendChild(s);
+    const words = text.split(" ");
+    let charIndex = 0;
+    words.forEach((word, wi) => {
+      if (wi > 0) el.appendChild(document.createTextNode(" "));
+      if (!word) return;
+      const wspan = document.createElement("span");
+      wspan.className = "letters-word";
+      [...word].forEach((ch) => {
+        const s = document.createElement("span");
+        s.textContent = ch;
+        s.style.animationDelay = `${baseDelay + charIndex * step}s`;
+        wspan.appendChild(s);
+        charIndex++;
+      });
+      el.appendChild(wspan);
     });
   }
 
