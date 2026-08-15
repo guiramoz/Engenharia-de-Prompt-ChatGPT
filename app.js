@@ -947,6 +947,7 @@
 
   function renderNotificationsPage(user) {
     const notices = state.notifications.filter((item) => item.userId === user.id);
+    const unread = notices.filter((item) => !item.read).length;
     return `
       <section class="page active">
         <div class="page-header">
@@ -954,19 +955,45 @@
             <h1>Central de notificações</h1>
             <p>Alertas sobre tarefas, menções, anexos, prazos e alterações relevantes.</p>
           </div>
-          <button class="btn btn-secondary" data-action="mark-all-read">Marcar tudo como lido</button>
+          ${notices.length ? `<button class="btn btn-secondary" data-action="mark-all-read">Limpar notificações</button>` : ""}
         </div>
         <article class="card list-card">
+          <div class="section-header">
+            <h3>Recebidas</h3>
+            <span class="chip ${unread ? "brand" : ""}">${unread} não lida(s)</span>
+          </div>
           <div class="notice-list">
-            ${notices.length ? notices.map((item) => `
-              <div class="notice-item ${item.read ? "" : "unread"}">
-                <strong>${escapeHtml(item.text)}</strong>
-                <small>${formatDateTime(item.createdAt)} · ${escapeHtml(item.type)}</small>
-              </div>
-            `).join("") : `<div class="empty-state">Você ainda não recebeu notificações.</div>`}
+            ${notices.length ? notices.map((item) => renderNoticeItem(item)).join("") : `<div class="empty-state">Você ainda não recebeu notificações.</div>`}
           </div>
         </article>
       </section>
+    `;
+  }
+
+  function renderNoticeItem(item) {
+    const icons = {
+      task: "▣",
+      deadline: "⏰",
+      overdue: "⚠",
+      mention: "@",
+      info: "◔"
+    };
+    const labels = {
+      task: "Tarefa",
+      deadline: "Prazo",
+      overdue: "Atraso",
+      mention: "Menção",
+      info: "Informação"
+    };
+    return `
+      <div class="notice-item ${item.read ? "" : "unread"}">
+        <div class="notice-icon">${icons[item.type] || "◔"}</div>
+        <div class="notice-body">
+          <strong>${escapeHtml(item.text)}</strong>
+          <small>${formatDateTime(item.createdAt)}</small>
+        </div>
+        <span class="chip">${escapeHtml(labels[item.type] || item.type)}</span>
+      </div>
     `;
   }
 
