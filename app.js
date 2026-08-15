@@ -396,13 +396,19 @@
               </div>
               <div class="field">
                 <label for="password">Senha</label>
-                <input id="password" name="password" type="password" placeholder="123456" required />
+                <div class="password-wrap">
+                  <input id="password" name="password" type="password" placeholder="123456" required />
+                  <button class="btn btn-ghost password-toggle" type="button" data-action="toggle-password">Mostrar</button>
+                </div>
               </div>
               <button class="btn btn-primary" type="submit">Acessar</button>
             </form>
             <div class="helper-row">
-              <span class="muted">Contas de demonstração</span>
-              <button class="btn btn-ghost" type="button" data-action="fill-demo">Preencher exemplos</button>
+              <span class="muted">Preencher com conta de demonstração</span>
+            </div>
+            <div class="action-row">
+              <button class="btn btn-secondary" type="button" data-action="fill-demo" data-email="alex@taskflow.local">Preencher Líder</button>
+              <button class="btn btn-secondary" type="button" data-action="fill-demo" data-email="sarah@taskflow.local">Preencher Membro</button>
             </div>
             <div class="quick-login">
               <div class="quick-pills">
@@ -1043,13 +1049,22 @@
 
   function attachLoginHandlers() {
     const form = document.getElementById("loginForm");
-    const fillBtn = document.querySelector('[data-action="fill-demo"]');
-    if (fillBtn) {
-      fillBtn.addEventListener("click", () => {
-        const email = document.getElementById("email");
-        const password = document.getElementById("password");
-        email.value = "alex@taskflow.local";
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    document.querySelectorAll('[data-action="fill-demo"]').forEach((button) => {
+      button.addEventListener("click", () => {
+        email.value = button.dataset.email;
         password.value = "123456";
+        email.dispatchEvent(new Event("blur"));
+        password.dispatchEvent(new Event("blur"));
+      });
+    });
+    const toggleBtn = document.querySelector('[data-action="toggle-password"]');
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const show = password.type === "password";
+        password.type = show ? "text" : "password";
+        toggleBtn.textContent = show ? "Ocultar" : "Mostrar";
       });
     }
     if (form) {

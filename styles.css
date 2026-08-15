@@ -259,6 +259,26 @@ input[type="checkbox"] {
   font-weight: 700;
 }
 
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap input {
+  padding-right: 84px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  background: #e2e8f0;
+  color: var(--text);
+}
+
 .btn {
   border: none;
   border-radius: 12px;
