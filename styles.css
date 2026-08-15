@@ -1,6 +1,6 @@
 :root {
-  --bg: #eef2f7;
-  --bg-2: #dfe7f2;
+  --bg: #f3f6fb;
+  --bg-2: #e9eef8;
   --panel: rgba(15, 23, 42, 0.92);
   --panel-soft: rgba(255, 255, 255, 0.76);
   --surface: #ffffff;
@@ -8,9 +8,9 @@
   --line: rgba(148, 163, 184, 0.25);
   --text: #102034;
   --muted: #64748b;
-  --brand: #223867;
-  --brand-deep: #0a2c5c;
-  --brand-2: #c6ab5a;
+  --brand: #003087;
+  --brand-deep: #00256e;
+  --brand-2: #ff8400;
   --brand-3: #18a34a;
   --warn: #f59e0b;
   --danger: #ef4444;
@@ -31,11 +31,11 @@ body {
   margin: 0;
   min-height: 100%;
   background:
-    radial-gradient(circle at top left, rgba(34, 56, 103, 0.18), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(24, 163, 74, 0.18), transparent 26%),
+    radial-gradient(circle at top left, rgba(0, 48, 135, 0.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(255, 132, 0, 0.16), transparent 26%),
     linear-gradient(180deg, #f9fbfe 0%, var(--bg) 100%);
   color: var(--text);
-  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  font-family: "Nunito", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
 }
 
 body {
@@ -69,8 +69,8 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: rgba(34, 56, 103, 0.6);
-  box-shadow: 0 0 0 4px rgba(34, 56, 103, 0.1);
+  border-color: rgba(0, 48, 135, 0.6);
+  box-shadow: 0 0 0 4px rgba(0, 48, 135, 0.1);
 }
 
 textarea {
@@ -127,8 +127,8 @@ input[type="checkbox"] {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(circle at 85% 15%, rgba(198, 171, 90, 0.14), transparent 45%),
-    linear-gradient(135deg, #0a2c5c, #223867);
+    radial-gradient(circle at 85% 15%, rgba(255, 132, 0, 0.14), transparent 45%),
+    linear-gradient(135deg, #00256e, #003087);
   color: #f8fafc;
   padding: 38px;
 }
@@ -138,7 +138,7 @@ input[type="checkbox"] {
   content: "";
   position: absolute;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(198, 171, 90, 0.22), transparent 68%);
+  background: radial-gradient(circle, rgba(255, 132, 0, 0.22), transparent 68%);
   filter: blur(6px);
 }
 
@@ -172,7 +172,7 @@ input[type="checkbox"] {
 
 .brand-text small {
   display: block;
-  color: rgba(198, 171, 90, 0.85);
+  color: rgba(255, 132, 0, 0.85);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -199,10 +199,10 @@ input[type="checkbox"] {
   gap: 8px;
   align-items: center;
   padding: 0.35rem 0.75rem;
-  border: 1px solid rgba(198, 171, 90, 0.35);
+  border: 1px solid rgba(255, 132, 0, 0.35);
   border-radius: 999px;
-  background: rgba(198, 171, 90, 0.08);
-  color: #f5d36a;
+  background: rgba(255, 132, 0, 0.08);
+  color: #ffb03a;
   font-size: 0.88rem;
 }
 
@@ -229,7 +229,7 @@ input[type="checkbox"] {
 
 .highlight-card {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(198, 171, 90, 0.22);
+  border: 1px solid rgba(255, 132, 0, 0.22);
   border-radius: 20px;
   padding: 18px;
   min-height: 120px;
@@ -239,7 +239,7 @@ input[type="checkbox"] {
   display: block;
   font-size: 1.35rem;
   margin-bottom: 8px;
-  color: #f5d36a;
+  color: #ffb03a;
 }
 
 .login-card {
@@ -248,6 +248,13 @@ input[type="checkbox"] {
   display: grid;
   align-content: center;
   border: 1px solid rgba(255, 255, 255, 0.45);
+  transition: opacity 0.32s ease, transform 0.32s ease;
+}
+
+.login-card.exit {
+  opacity: 0;
+  transform: translateY(-14px) scale(0.97);
+  pointer-events: none;
 }
 
 .login-card h2 {
@@ -310,8 +317,8 @@ input[type="checkbox"] {
 
 .btn-primary {
   color: #fff;
-  background: linear-gradient(135deg, #223867, #0a2c5c);
-  box-shadow: 0 12px 26px rgba(4, 30, 66, 0.3);
+  background: linear-gradient(135deg, #ff8400, #ec7000);
+  box-shadow: 0 12px 26px rgba(255, 132, 0, 0.35);
 }
 
 .btn-secondary {
@@ -346,8 +353,8 @@ input[type="checkbox"] {
 }
 
 .pill {
-  border: 1px solid rgba(34, 56, 103, 0.2);
-  background: rgba(34, 56, 103, 0.06);
+  border: 1px solid rgba(0, 48, 135, 0.2);
+  background: rgba(0, 48, 135, 0.06);
   color: var(--brand);
   border-radius: 999px;
   padding: 0.44rem 0.78rem;
@@ -364,7 +371,7 @@ input[type="checkbox"] {
 }
 
 .sidebar {
-  background: linear-gradient(180deg, #0a2c5c 0%, #223867 100%);
+  background: linear-gradient(180deg, #00256e 0%, #003087 100%);
   color: #e2e8f0;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
@@ -396,8 +403,8 @@ input[type="checkbox"] {
 
 .nav-btn.active {
   color: #fff;
-  background: rgba(198, 171, 90, 0.12);
-  border-color: rgba(198, 171, 90, 0.35);
+  background: rgba(255, 132, 0, 0.12);
+  border-color: rgba(255, 132, 0, 0.35);
 }
 
 .nav-label {
@@ -438,7 +445,7 @@ input[type="checkbox"] {
   place-items: center;
   font-weight: 800;
   color: white;
-  background: linear-gradient(135deg, #c6ab5a, #223867);
+  background: linear-gradient(135deg, #ff8400, #003087);
 }
 
 .content {
@@ -486,8 +493,8 @@ input[type="checkbox"] {
 
 .badge {
   border-radius: 999px;
-  background: #dbeafe;
-  color: var(--brand);
+  background: #ffd9a8;
+  color: #c2410c;
   font-weight: 800;
   padding: 0.38rem 0.72rem;
   font-size: 0.84rem;
@@ -608,7 +615,7 @@ input[type="checkbox"] {
 }
 
 .stat-card.accent-blue .stat-icon {
-  background: rgba(34, 56, 103, 0.12);
+  background: rgba(0, 48, 135, 0.12);
 }
 
 .stat-card.accent-blue .stat-value {
@@ -761,7 +768,7 @@ input[type="checkbox"] {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #223867, #c6ab5a);
+  background: linear-gradient(90deg, #003087, #ff8400);
 }
 
 .muted {
@@ -848,7 +855,7 @@ input[type="checkbox"] {
 }
 
 .chip.brand {
-  background: rgba(34, 56, 103, 0.12);
+  background: rgba(0, 48, 135, 0.12);
   color: var(--brand);
 }
 
@@ -1062,8 +1069,8 @@ input[type="checkbox"] {
   place-items: center;
   font-weight: 800;
   color: #fff;
-  background: linear-gradient(135deg, #c6ab5a, #223867);
-  box-shadow: 0 10px 22px rgba(34, 56, 103, 0.25);
+  background: linear-gradient(135deg, #ff8400, #003087);
+  box-shadow: 0 10px 22px rgba(0, 48, 135, 0.25);
   flex-shrink: 0;
 }
 
@@ -1110,9 +1117,9 @@ input[type="checkbox"] {
   font-weight: 800;
   font-size: 1.05rem;
   color: white;
-  background: linear-gradient(135deg, #c6ab5a, #223867);
+  background: linear-gradient(135deg, #ff8400, #003087);
   flex-shrink: 0;
-  box-shadow: 0 8px 18px rgba(34, 56, 103, 0.28);
+  box-shadow: 0 8px 18px rgba(0, 48, 135, 0.28);
 }
 
 .user-card-id {
@@ -1145,7 +1152,7 @@ input[type="checkbox"] {
 
 .tab-btn.active {
   color: #fff;
-  background: linear-gradient(135deg, #223867, #c6ab5a);
+  background: linear-gradient(135deg, #003087, #ff8400);
   border-color: transparent;
 }
 
@@ -1242,7 +1249,7 @@ input[type="checkbox"] {
   display: grid;
   place-items: center;
   font-weight: 800;
-  background: rgba(34, 56, 103, 0.12);
+  background: rgba(0, 48, 135, 0.12);
   color: var(--brand);
 }
 
@@ -1262,12 +1269,12 @@ input[type="checkbox"] {
 }
 
 .notice-item.unread {
-  border-color: rgba(34, 56, 103, 0.35);
-  background: rgba(219, 234, 254, 0.45);
+  border-color: rgba(0, 48, 135, 0.35);
+  background: rgba(255, 132, 0, 0.18);
 }
 
 .notice-item.unread .notice-icon {
-  background: rgba(34, 56, 103, 0.18);
+  background: rgba(0, 48, 135, 0.18);
 }
 
 .empty-state {
@@ -1307,27 +1314,28 @@ input[type="checkbox"] {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: radial-gradient(circle at 50% 30%, #223867, #0a2c5c 72%);
+  background: radial-gradient(circle at 50% 30%, #003087, #00256e 72%);
   display: grid;
   place-content: center;
   justify-items: center;
   gap: 16px;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.55s ease, transform 0.55s ease;
 }
 
 .splash.hidden {
   opacity: 0;
+  transform: scale(1.05);
   pointer-events: none;
 }
 
 .splash-svg {
-  width: 96px;
-  height: 96px;
+  width: 116px;
+  height: 116px;
   animation: splashPulse 1.3s ease-in-out infinite alternate;
 }
 
 .splash-title {
-  color: #f5d36a;
+  color: #ffb03a;
   font-size: 2.1rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -1343,7 +1351,7 @@ input[type="checkbox"] {
   width: 200px;
   height: 6px;
   border-radius: 999px;
-  background: rgba(198, 171, 90, 0.2);
+  background: rgba(255, 132, 0, 0.2);
   overflow: hidden;
 }
 
@@ -1352,7 +1360,7 @@ input[type="checkbox"] {
   height: 100%;
   width: 40%;
   border-radius: inherit;
-  background: linear-gradient(90deg, transparent, #c6ab5a, transparent);
+  background: linear-gradient(90deg, transparent, #ff8400, transparent);
   animation: splashLoad 1.2s ease-in-out infinite;
 }
 
@@ -1397,6 +1405,78 @@ input[type="checkbox"] {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+.letters span {
+  display: inline-block;
+  white-space: pre;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: letterIn 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes letterIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-shell.app-enter {
+  animation: appIn 0.55s cubic-bezier(0.22, 0.68, 0.36, 1) both;
+}
+
+@keyframes appIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.btn.loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  animation: dotBounce 0.9s ease-in-out infinite;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes dotBounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
   }
 }
 

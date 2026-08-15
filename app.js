@@ -263,7 +263,30 @@
   }
 
   function renderLogo() {
-    return `<img class="tf-logo" src="./imagens/scania-logo.svg" alt="Scania" />`;
+    return `<img class="tf-logo" src="./imagens/itau-logo.png" alt="Itaú" />`;
+  }
+
+  function animateLetters(el, baseDelay = 0, step = 0.04) {
+    if (!el) return;
+    const text = el.textContent || "";
+    if (!text) return;
+    el.classList.add("letters");
+    el.setAttribute("aria-label", text);
+    el.textContent = "";
+    [...text].forEach((ch, i) => {
+      const s = document.createElement("span");
+      s.textContent = ch === " " ? "\u00A0" : ch;
+      s.style.animationDelay = `${baseDelay + i * step}s`;
+      el.appendChild(s);
+    });
+  }
+
+  function enterApp() {
+    const shell = app.querySelector(".app-shell");
+    if (!shell) return;
+    shell.classList.remove("app-enter");
+    void shell.offsetWidth;
+    shell.classList.add("app-enter");
   }
 
   function formatDate(value) {
@@ -371,7 +394,7 @@
               ${renderLogo()}
               <div class="brand-text">
                 <div>TaskFlow</div>
-                <small>Descomplica sua operação</small>
+                <small>Itaú</small>
               </div>
             </div>
             <div class="hero-copy">
@@ -446,7 +469,7 @@
               ${renderLogo()}
               <div class="brand-text">
                 <div>TaskFlow</div>
-                <small class="brand-tagline">Descomplica sua operação</small>
+                <small class="brand-tagline">Itaú</small>
               </div>
             </div>
             <nav class="sidebar-nav">
@@ -634,7 +657,7 @@
 
   const STATUS_COLORS = {
     "A Fazer": "#94a3b8",
-    "Em Desenvolvimento": "#2563eb",
+    "Em Desenvolvimento": "#003087",
     "Em Revisão": "#f59e0b",
     "Concluída": "#22c55e",
     "Cancelada": "#ef4444"
@@ -1062,6 +1085,11 @@
     const form = document.getElementById("loginForm");
     const email = document.getElementById("email");
     const password = document.getElementById("password");
+    const heading = document.querySelector(".login-card h2");
+    animateLetters(heading);
+    [email, password].forEach((input) => {
+      if (input) input.addEventListener("focus", () => animateLetters(heading));
+    });
     document.querySelectorAll('[data-action="fill-demo"]').forEach((button) => {
       button.addEventListener("click", () => {
         email.value = button.dataset.email;
@@ -1094,8 +1122,21 @@
         state.sessionEmail = user.email;
         state.ui.page = "dashboard";
         state.ui.taskFilter = "all";
-        pushToast("Login realizado", `Bem-vindo, ${user.name}.`);
-        render();
+        const submitBtn = form.querySelector('[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.classList.add("loading");
+          submitBtn.innerHTML = `Acessando<span class="dots"><span></span><span></span><span></span></span>`;
+        }
+        const card = document.querySelector(".login-card");
+        setTimeout(() => {
+          if (card) card.classList.add("exit");
+          setTimeout(() => {
+            pushToast("Login realizado", `Bem-vindo, ${user.name}.`);
+            render();
+            enterApp();
+          }, 340);
+        }, 700);
       });
     }
   }
@@ -2082,8 +2123,11 @@
     if (!splash) return;
     setTimeout(() => {
       splash.classList.add("hidden");
-      setTimeout(() => splash.remove(), 600);
-    }, 1800);
+      setTimeout(() => {
+        splash.remove();
+        enterApp();
+      }, 650);
+    }, 1600);
   }
 
   render();
