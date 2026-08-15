@@ -513,6 +513,7 @@
   function renderDashboardPage(user) {
     const tasks = visibleTasksFor(user);
     const projects = visibleProjectsFor(user);
+    const total = tasks.length;
     const completed = tasks.filter((task) => task.status === "Concluída").length;
     const inProgress = tasks.filter((task) => ["Em Desenvolvimento", "Em Revisão"].includes(task.status)).length;
     const overdue = tasks.filter(taskIsOverdue).length;
@@ -520,6 +521,8 @@
     const byTeam = groupCount(tasks, (task) => getTeam(task.teamId)?.name || "Sem equipe");
     const byResponsible = groupCount(tasks, (task) => getUser(task.responsibleId)?.name || "Sem responsável");
     const byProject = groupCount(tasks, (task) => getProject(task.projectId)?.name || "Sem projeto");
+    const statusCounts = groupCount(tasks, (task) => task.status);
+    const completionRate = pctOf(total, completed);
     return `
       <section class="page active">
         <div class="page-header">
@@ -534,10 +537,18 @@
         </div>
 
         <div class="panel-grid dashboard-grid">
-          ${statCard("Tarefas concluídas", completed, "meta do fluxo")}
-          ${statCard("Em andamento", inProgress, "A Fazer, Em Desenvolvimento e Revisão")}
-          ${statCard("Atrasadas", overdue, "Prazo já expirado")}
-          ${statCard("Próximas do vencimento", dueSoon, "Vencem em até 48h")}
+          ${statCard("✔", "Tarefas concluídas", completed, "meta do fluxo", "green", pctOf(total, completed))}
+          ${statCard("▶", "Em andamento", inProgress, "Desenvolvimento e Revisão", "blue", pctOf(total, inProgress))}
+          ${statCard("⚠", "Atrasadas", overdue, "Prazo já expirado", "red", pctOf(total, overdue))}
+          ${statCard("⏰", "Próximas do vencimento", dueSoon, "Vencem em até 48h", "amber", pctOf(total, dueSoon))}
+
+          <article class="card chart-card">
+            ${chartHeader("Status das tarefas", "Distribuição geral do fluxo")}
+            <div class="donut-wrap">
+              ${renderDonut(statusCounts, total)}
+              ${renderDonutLegend(statusCounts)}
+            </div>
+          </article>
 
           <article class="card chart-card">
             ${chartHeader("Tarefas por responsável", "Distribuição dos pontos de trabalho")}
@@ -547,6 +558,15 @@
           <article class="card chart-card">
             ${chartHeader("Tarefas por equipe", "Escopo visível no seu contexto")}
             ${renderBarChart(byTeam)}
+          </article>
+
+          <article class="card chart-card">
+            ${chartHeader("Progresso geral", "Conclusão das tarefas visíveis")}
+            <div class="big-progress">
+              <div class="big-progress-value">${completionRate}%</div>
+              <div class="bar big"><span style="width:${completionRate}%"></span></div>
+              <div class="muted">${completed} de ${total} tarefa(s) concluída(s)</div>
+            </div>
           </article>
 
           <article class="card chart-card wide">
@@ -577,13 +597,62 @@
     `;
   }
 
-  function statCard(label, value, note) {
+  function pctOf(total, value) {
+    return total ? Math.round((value / total) * 100) : 0;
+  }
+
+  function statCard(icon, label, value, note, accent, pct) {
     return `
-      <article class="card stat-card">
-        <div class="stat-value">${value}</div>
+      <article class="card stat-card accent-${accent}">
+        <div class="stat-top">
+          <div class="stat-icon">${icon}</div>
+          <div class="stat-value">${value}</div>
+        </div>
         <div class="stat-label">${escapeHtml(label)}</div>
         <p class="muted">${escapeHtml(note)}</p>
+        <div class="bar stat-bar"><span style="width:${pct}%"></span></div>
       </article>
+    `;
+  }
+
+  const STATUS_COLORS = {
+    "A Fazer": "#94a3b8",
+    "Em Desenvolvimento": "#2563eb",
+    "Em Revisão": "#f59e0b",
+    "Concluída": "#22c55e",
+    "Cancelada": "#ef4444"
+  };
+
+  function renderDonut(counts, total) {
+    if (!total) return `<div class="empty-state">Sem dados para exibir.</div>`;
+    const entries = Object.entries(counts);
+    let cursor = 0;
+    const segments = entries.map(([status, count]) => {
+      const start = cursor;
+      cursor += (count / total) * 100;
+      return `${STATUS_COLORS[status] || "#94a3b8"} ${start}% ${cursor}%`;
+    });
+    return `
+      <div class="donut" style="background: conic-gradient(${segments.join(", ")})">
+        <div class="donut-hole">
+          <strong>${total}</strong>
+          <span>tarefas</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderDonutLegend(counts) {
+    return `
+      <div class="donut-legend">
+        ${Object.entries(counts).map(([status, count]) => `
+          <div class="legend-item">
+            <span class="legend-dot" style="background:${STATUS_COLORS[status] || "#94a3b8"}"></span>
+            <span>${escapeHtml(status)}</span>
+            <strong>${count}</strong>
+          </div>
+        `).join("")}
+      </div>
     `;
   }
 

@@ -530,12 +530,147 @@ input[type="checkbox"] {
 .stat-card {
   grid-column: span 3;
   padding: 18px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 
 .stat-value {
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.05em;
+}
+
+.stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  background: #eef2ff;
+}
+
+.stat-bar {
+  margin-top: 8px;
+}
+
+.stat-card.accent-green .stat-icon {
+  background: rgba(34, 197, 94, 0.14);
+}
+
+.stat-card.accent-green .stat-value {
+  color: #15803d;
+}
+
+.stat-card.accent-blue .stat-icon {
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.stat-card.accent-blue .stat-value {
+  color: var(--brand);
+}
+
+.stat-card.accent-red .stat-icon {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.stat-card.accent-red .stat-value {
+  color: #b91c1c;
+}
+
+.stat-card.accent-amber .stat-icon {
+  background: rgba(245, 158, 11, 0.16);
+}
+
+.stat-card.accent-amber .stat-value {
+  color: #b45309;
+}
+
+.donut-wrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.donut {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.donut-hole {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.2);
+}
+
+.donut-hole strong {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.donut-hole span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.donut-legend {
+  display: grid;
+  gap: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.legend-item span:nth-child(2) {
+  flex: 1;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.big-progress {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.big-progress-value {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--brand);
+}
+
+.bar.big {
+  height: 16px;
 }
 
 .stat-label {
@@ -1177,6 +1312,16 @@ input[type="checkbox"] {
 
   .chart-row {
     grid-template-columns: 1fr;
+  }
+
+  .donut-wrap {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: left;
+  }
+
+  .donut-legend {
+    width: 100%;
   }
 
   .helper-row,
