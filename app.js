@@ -749,9 +749,6 @@
         <header>
           <div>
             <h4>${escapeHtml(task.title)}</h4>
-            <div class="chip-row">
-              <span class="chip ${statusClass(task.status)}">${escapeHtml(task.status)}</span>
-            </div>
           </div>
           <button class="btn btn-ghost" data-action="open-task" data-task-id="${task.id}">Abrir</button>
         </header>
