@@ -389,7 +389,7 @@
           <section class="login-card">
             <h2>Entrar no TaskFlow</h2>
             <p>Use e-mail e senha para acessar a sua área.</p>
-            <form id="loginForm" class="field-grid">
+            <form id="loginForm" class="field-grid" novalidate>
               <div class="field">
                 <label for="email">E-mail</label>
                 <input id="email" name="email" type="email" placeholder="alex@taskflow.local" required />
@@ -991,8 +991,10 @@
       });
     }
     if (form) {
+      bindFormValidation(form);
       form.addEventListener("submit", (event) => {
         event.preventDefault();
+        if (!validateForm(form)) return;
         const formData = new FormData(form);
         const email = String(formData.get("email") || "").trim().toLowerCase();
         const password = String(formData.get("password") || "");
@@ -1125,13 +1127,92 @@
     overlay.innerHTML = "";
   }
 
+  function bindFormValidation(form) {
+    form.querySelectorAll("input, select, textarea").forEach((field) => {
+      if (field.type === "checkbox" || field.type === "hidden") return;
+      field.addEventListener("blur", () => validateField(field));
+      field.addEventListener("input", () => {
+        if (field.classList.contains("invalid")) validateField(field);
+      });
+    });
+  }
+
+  function validateForm(form) {
+    let valid = true;
+    form.querySelectorAll("input, select, textarea").forEach((field) => {
+      if (field.type === "checkbox" || field.type === "hidden") return;
+      if (!validateField(field)) valid = false;
+    });
+    if (!valid) {
+      const firstInvalid = form.querySelector(".invalid");
+      if (firstInvalid) firstInvalid.focus();
+    }
+    return valid;
+  }
+
+  function validateField(field) {
+    if (field.readOnly || field.disabled) {
+      clearFieldError(field);
+      return true;
+    }
+    const value = field.value.trim();
+    const rules = [];
+    if (field.required && !value) rules.push("Este campo é obrigatório.");
+    if (field.type === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      rules.push("Informe um e-mail válido.");
+    }
+    if (field.dataset.minlength && value && value.length < Number(field.dataset.minlength)) {
+      rules.push(`Mínimo de ${field.dataset.minlength} caracteres.`);
+    }
+    if (field.dataset.future && value && new Date(value) < new Date(new Date().toDateString())) {
+      rules.push("A data deve ser hoje ou futura.");
+    }
+    if (field.name === "email" && value) {
+      const form = field.closest("form");
+      if (form && (form.dataset.formAction === "user" || form.dataset.formAction === "user-manage")) {
+        const selfId = form.dataset.userId;
+        const email = value.toLowerCase();
+        const exists = state.users.some((user) => user.email.toLowerCase() === email && user.id !== selfId);
+        if (exists) rules.push("Este e-mail já está cadastrado.");
+      }
+    }
+    if (rules.length) return setFieldError(field, rules[0]);
+    clearFieldError(field);
+    return true;
+  }
+
+  function setFieldError(field, message) {
+    const wrapper = field.closest(".field");
+    const target = wrapper || field.parentElement;
+    let error = target.querySelector(".field-error");
+    if (!error) {
+      error = document.createElement("span");
+      error.className = "field-error";
+      target.appendChild(error);
+    }
+    error.textContent = message;
+    field.classList.add("invalid");
+    return false;
+  }
+
+  function clearFieldError(field) {
+    field.classList.remove("invalid");
+    const wrapper = field.closest(".field");
+    if (wrapper) {
+      const error = wrapper.querySelector(".field-error");
+      if (error) error.textContent = "";
+    }
+  }
+
   function bindModalHandlers(overlay) {
     overlay.querySelectorAll("[data-close-modal]").forEach((button) => {
       button.addEventListener("click", closeOverlay);
     });
     overlay.querySelectorAll("form").forEach((form) => {
+      bindFormValidation(form);
       form.addEventListener("submit", (event) => {
         event.preventDefault();
+        if (!validateForm(form)) return;
         const action = form.dataset.formAction;
         const formData = new FormData(form);
         if (action === "task") handleTaskForm(formData, form);
@@ -1192,14 +1273,14 @@
                 <h3>Dados da tarefa</h3>
                 <span class="chip ${statusClass(task.status)}">${escapeHtml(task.status)}</span>
               </div>
-              <form class="field-grid" data-form-action="task" data-task-id="${task.id}">
+              <form class="field-grid" data-form-action="task" data-task-id="${task.id}" novalidate>
                 <div class="field">
                   <label>Título</label>
-                  <input name="title" value="${escapeHtml(task.title)}" ${canEditAdmin ? "" : "readonly"} />
+                  <input name="title" value="${escapeHtml(task.title)}" required ${canEditAdmin ? "" : "readonly"} />
                 </div>
                 <div class="field">
                   <label>Descrição</label>
-                  <textarea name="description" ${canEditAdmin ? "" : "readonly"}>${escapeHtml(task.description)}</textarea>
+                  <textarea name="description" required ${canEditAdmin ? "" : "readonly"}>${escapeHtml(task.description)}</textarea>
                 </div>
                 <div class="two-col">
                   <div class="field">
@@ -1221,7 +1302,7 @@
                   </div>
                   <div class="field">
                     <label>Prazo</label>
-                    <input name="dueDate" type="date" value="${task.dueDate}" ${canEditAdmin ? "" : "readonly"} />
+                    <input name="dueDate" type="date" value="${task.dueDate}" required ${canEditAdmin ? "" : "readonly"} />
                   </div>
                 </div>
                 <div class="field">
@@ -1331,7 +1412,7 @@
         <button class="btn btn-ghost" data-close-modal>Fechar</button>
       </div>
       <div class="modal-body">
-        <form class="field-grid" data-form-action="task">
+        <form class="field-grid" data-form-action="task" novalidate>
           <div class="modal-grid">
             <div class="field">
               <label>Título</label>
@@ -1362,7 +1443,7 @@
           <div class="modal-grid">
             <div class="field">
               <label>Prazo</label>
-              <input name="dueDate" type="date" required />
+              <input name="dueDate" type="date" data-future required />
             </div>
             <div class="field">
               <label>Status</label>
@@ -1399,7 +1480,7 @@
         <button class="btn btn-ghost" data-close-modal>Fechar</button>
       </div>
       <div class="modal-body">
-        <form class="field-grid" data-form-action="project">
+        <form class="field-grid" data-form-action="project" novalidate>
           <div class="modal-grid">
             <div class="field">
               <label>Nome</label>
@@ -1417,7 +1498,7 @@
           <div class="modal-grid">
             <div class="field">
               <label>Prazo</label>
-              <input name="deadline" type="date" required />
+              <input name="deadline" type="date" data-future required />
             </div>
             <div class="field">
               <label>Status</label>
@@ -1447,7 +1528,7 @@
         <button class="btn btn-ghost" data-close-modal>Fechar</button>
       </div>
       <div class="modal-body">
-        <form class="field-grid" data-form-action="team">
+        <form class="field-grid" data-form-action="team" novalidate>
           <div class="modal-grid">
             <div class="field">
               <label>Nome</label>
@@ -1479,7 +1560,7 @@
         <button class="btn btn-ghost" data-close-modal>Fechar</button>
       </div>
       <div class="modal-body">
-        <form class="field-grid" data-form-action="user">
+        <form class="field-grid" data-form-action="user" novalidate>
           <div class="modal-grid">
             <div class="field">
               <label>Nome</label>
@@ -1493,7 +1574,7 @@
           <div class="modal-grid">
             <div class="field">
               <label>Senha</label>
-              <input name="password" type="text" required />
+              <input name="password" type="text" data-minlength="6" required />
             </div>
             <div class="field">
               <label>Perfil</label>
@@ -1531,7 +1612,7 @@
         <button class="btn btn-ghost" data-close-modal>Fechar</button>
       </div>
       <div class="modal-body">
-        <form class="field-grid" data-form-action="team-manage" data-team-id="${team.id}">
+        <form class="field-grid" data-form-action="team-manage" data-team-id="${team.id}" novalidate>
           <div class="field">
             <label>Nome da equipe</label>
             <input name="name" value="${escapeHtml(team.name)}" required />
@@ -1564,7 +1645,7 @@
         <button class="btn btn-ghost" data-close-modal>Fechar</button>
       </div>
       <div class="modal-body">
-        <form class="field-grid" data-form-action="user-manage" data-user-id="${user.id}">
+        <form class="field-grid" data-form-action="user-manage" data-user-id="${user.id}" novalidate>
           <div class="modal-grid">
             <div class="field">
               <label>Nome</label>
@@ -1578,7 +1659,7 @@
           <div class="modal-grid">
             <div class="field">
               <label>Senha</label>
-              <input name="password" value="${escapeHtml(user.password)}" required />
+              <input name="password" value="${escapeHtml(user.password)}" data-minlength="6" required />
             </div>
             <div class="field">
               <label>Perfil</label>
