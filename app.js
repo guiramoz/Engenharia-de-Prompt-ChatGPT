@@ -1836,9 +1836,7 @@
   }
 
   function markAllRead(userId) {
-    state.notifications.forEach((item) => {
-      if (item.userId === userId) item.read = true;
-    });
+    state.notifications = state.notifications.filter((item) => item.userId !== userId);
     saveState();
   }
 
