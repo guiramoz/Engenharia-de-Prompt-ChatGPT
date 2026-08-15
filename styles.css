@@ -1586,7 +1586,47 @@ input[type="checkbox"] {
   }
 
   .sidebar {
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .sidebar .brand-badge .brand-text {
+    font-size: 1rem;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-btn {
+    flex-shrink: 0;
+    width: auto;
+    padding: 0.55rem 0.85rem;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+
+  .nav-label {
+    gap: 8px;
+  }
+
+  .nav-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sidebar-foot {
+    border-top: none;
+    padding-top: 0;
   }
 
   .board {
@@ -1618,6 +1658,10 @@ input[type="checkbox"] {
 }
 
 @media (max-width: 760px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   .app-shell {
     padding: 0;
   }
@@ -1633,6 +1677,100 @@ input[type="checkbox"] {
   .sidebar {
     padding-left: 14px;
     padding-right: 14px;
+  }
+
+  .login-wrap {
+    gap: 14px;
+  }
+
+  .hero-card {
+    padding: 24px 20px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
+
+  .hero-copy p {
+    font-size: 0.98rem;
+  }
+
+  .hero-highlights {
+    grid-template-columns: 1fr;
+  }
+
+  .login-card {
+    padding: 22px 18px;
+  }
+
+  .splash-title {
+    font-size: 1.7rem;
+  }
+
+  .splash-sub {
+    font-size: 0.92rem;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  .btn {
+    min-height: 46px;
+  }
+
+  .tab-btn {
+    padding: 0.7rem 1rem;
+  }
+
+  .sidebar {
+    gap: 10px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .stat-value {
+    font-size: 1.7rem;
+  }
+
+  .donut {
+    width: 132px;
+    height: 132px;
+  }
+
+  .donut-hole {
+    width: 88px;
+    height: 88px;
+  }
+
+  .overlay {
+    padding: 0;
+  }
+
+  .modal {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+
+  .modal-header {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(180deg, #ffffff, #f8fbff);
+    z-index: 2;
+  }
+
+  .modal-body {
+    padding: 16px;
   }
 
   .board,
